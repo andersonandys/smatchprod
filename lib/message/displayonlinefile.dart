@@ -114,12 +114,12 @@ class _DisplayonlinefileState extends State<Displayonlinefile> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => Viewimage(
-                                    url: media[index]["urlbase64"],
+                                    url: media[index]["urlfile"],
                                   )),
                         );
                       },
                       onLongPress: () {
-                        mscontrol.urlreponse.value = media[index]["urlbase64"];
+                        mscontrol.urlreponse.value = media[index]["urlfile"];
                         mscontrol.namefilereponse.value =
                             media[index]["namefile"];
                         Get.bottomSheet(SingleChildScrollView(
@@ -143,13 +143,13 @@ class _DisplayonlinefileState extends State<Displayonlinefile> {
                           color: Colors.grey.withOpacity(0.2),
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: (media[index]["urlbase64"].toString().isNotEmpty)
+                        child: (media[index]["urlfile"].toString().isNotEmpty)
                             ? ClipRRect(
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(10)),
                                 child: Image.network(
                                   // fit: BoxFit.cover,
-                                  media[index]["urlbase64"],
+                                  media[index]["urlfile"],
                                   errorBuilder: (BuildContext context,
                                       Object exception,
                                       StackTrace? stackTrace) {
@@ -216,7 +216,7 @@ class _DisplayonlinefileState extends State<Displayonlinefile> {
                       "mp4")
                     GestureDetector(
                       onLongPress: () {
-                        mscontrol.urlreponse.value = media[index]["urlbase64"];
+                        mscontrol.urlreponse.value = media[index]["urlfile"];
                         mscontrol.namefilereponse.value =
                             media[index]["namefile"];
                         Get.bottomSheet(SingleChildScrollView(
@@ -246,7 +246,7 @@ class _DisplayonlinefileState extends State<Displayonlinefile> {
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(10)),
                                 child: displayvideonly(
-                                  videourl: media[index]["urlbase64"],
+                                  videourl: media[index]["urlfile"],
                                   type: 'online',
                                 ),
                               )
@@ -330,7 +330,7 @@ class _DisplayonlinefileState extends State<Displayonlinefile> {
                                       player.pause();
                                     } else {
                                       player.play(
-                                          UrlSource(media[index]["urlbase64"]));
+                                          UrlSource(media[index]["urlfile"]));
                                     }
                                   },
                                 ),
@@ -374,7 +374,7 @@ class _DisplayonlinefileState extends State<Displayonlinefile> {
                   if (media[index]["extension"] == 'pdf')
                     GestureDetector(
                       onLongPress: () {
-                        mscontrol.urlreponse.value = media[index]["urlbase64"];
+                        mscontrol.urlreponse.value = media[index]["urlfile"];
                         mscontrol.namefilereponse.value =
                             media[index]["namefile"];
                         Get.bottomSheet(SingleChildScrollView(

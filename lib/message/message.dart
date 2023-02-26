@@ -118,7 +118,7 @@ class _MessageState extends State<Message> {
 
       smscontrol.extension.value = "m4a";
       print(path);
-      smscontrol.sendmessage(idbranche, nomusers, avataruser);
+      smscontrol.sendmessage(idbranche, nomusers, avataruser, context);
     }
   }
 
@@ -270,16 +270,16 @@ class _MessageState extends State<Message> {
                                           const SizedBox(
                                             height: 5,
                                           ),
-                                          // Displayonlinefile(
-                                          //   idmessage: message["idmessage"],
-                                          //   avatarsend: message["avatarsend"],
-                                          //   message: message["message"],
-                                          //   typemessage: message["typemessage"],
-                                          //   idsend: message["idsend"],
-                                          //   namesend: message["namesend"],
-                                          //   reponsefilename:
-                                          //       message["namefilereponse"],
-                                          // ),
+                                          Displayonlinefile(
+                                            idmessage: message["idmessage"],
+                                            avatarsend: message["avatarsend"],
+                                            message: message["message"],
+                                            typemessage: message["typemessage"],
+                                            idsend: message["idsend"],
+                                            namesend: message["namesend"],
+                                            reponsefilename:
+                                                message["namefilereponse"],
+                                          ),
                                           if (message["message"] != "")
                                             GestureDetector(
                                               onTap: () {
@@ -477,7 +477,8 @@ class _MessageState extends State<Message> {
           GestureDetector(
             onTap: () {
               if (smscontrol.write.isTrue) {
-                smscontrol.sendmessage(idbranche, nomusers, avataruser);
+                smscontrol.sendmessage(
+                    idbranche, nomusers, avataruser, context);
                 print(nomusers);
               } else {
                 (_recordState != RecordState.stop) ? _stop() : _start();

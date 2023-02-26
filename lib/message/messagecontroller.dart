@@ -36,7 +36,7 @@ class Messagecontroller extends GetxController {
   var namefilereponse = "".obs;
   var finalislise = [].obs;
   var images = [].obs;
-  sendmessage(idbranche, namesend, avatarsend) {
+  sendmessage(idbranche, namesend, avatarsend, context) {
     DateTime now = DateTime.now();
     String dateformat = DateFormat("kk:mm").format(now);
     listdef.value = filelist;
@@ -60,16 +60,41 @@ class Messagecontroller extends GetxController {
       "namefilereponse": namefilereponse.value,
       "idmessage": "",
       "finish": false,
-    }).then((value) {
+    }).then((value) async {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Dialog(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  CircularProgressIndicator(),
+                  SizedBox(height: 16.0),
+                  Text("Traitement des fichier..."),
+                ],
+              ),
+            ),
+          );
+        },
+      );
       FirebaseFirestore.instance
           .collection('message')
           .doc(value.id)
           .update({"idmessage": value.id});
-
       if (filedisplay.isNotEmpty) {
         for (var element in filedisplay) {
+          final FirebaseStorage storage = FirebaseStorage.instance;
+          Reference storageRef = storage.ref().child(element["name"]);
+          UploadTask uploadTask = storageRef.putString(element["urlbase64"],
+              format: PutStringFormat.base64);
+          TaskSnapshot downloadUrl = (await uploadTask);
+          String url = await downloadUrl.ref.getDownloadURL();
+
           FirebaseFirestore.instance.collection("fileUploads").add({
-            "urlfile": element["urlbase64"],
+            "urlfile": url,
             "extension": element["extension"],
             "finish": true,
             "namefile": element["name"],
@@ -77,9 +102,8 @@ class Messagecontroller extends GetxController {
             "idmessage": value.id,
           });
         }
-      } else {
-        print('vide oww');
-      }
+        Navigator.pop(context);
+      } else {}
 
       filelist.clear();
     });
@@ -104,16 +128,6 @@ class Messagecontroller extends GetxController {
         final File? path = await asset.file;
         final String base64 = base64Encode(bytes!);
         final String extensions = getExtension(path!.path);
-
-        final FirebaseStorage storage = FirebaseStorage.instance;
-
-        Reference storageRef = storage.ref().child(asset.title.toString());
-        UploadTask uploadTask =
-            storageRef.putString(base64, format: PutStringFormat.base64);
-        TaskSnapshot downloadUrl = (await uploadTask);
-        String url = await downloadUrl.ref.getDownloadURL();
-        print(url);
-
         filedisplay.add({
           "localpath": path.path,
           "urlbase64": base64,
